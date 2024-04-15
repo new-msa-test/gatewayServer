@@ -1,0 +1,30 @@
+server:
+  port: 8000
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: service-1
+          uri: lb://SERVICE-1
+          predicates:
+            - Path=/service-1/**
+          filters:
+            - AddRequestHeader=service1-reqHeader-key, service1-reqHeader-value
+            - AddResponseHeader=service1-resHeader-key, service1-resHeader-value
+#            - StripPrefix=1
+#        - id: service-2
+#          uri: lb://service-2
+#          predicates:
+#            - Path=/service-2/**
+#          filters:
+#            - StripPrefix=1
